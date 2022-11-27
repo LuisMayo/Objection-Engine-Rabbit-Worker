@@ -16,7 +16,7 @@ async def main() -> None:
     channel = await connection.channel()
 
     rpc = await RPC.create(channel)
-    await rpc.register("render", render_comment_list)
+    await rpc.register("oe_render", render_comment_list)
 
     try:
         await asyncio.Future()
