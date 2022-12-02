@@ -5,6 +5,11 @@ from aio_pika.patterns import RPC
 from objection_engine import render_comment_list
 import os
 
+def render_internal(output_filename: str, **kwargs):
+    final_file = tmpdir + '/' + output_filename
+    render_comment_list(output_filename=final_file, **kwargs)
+    return final_file
+
 
 async def main() -> None:
     connection = await connect_robust(
@@ -16,7 +21,7 @@ async def main() -> None:
     channel = await connection.channel()
 
     rpc = await RPC.create(channel)
-    await rpc.register("oe_render", render_comment_list)
+    await rpc.register("oe_render", render_internal)
 
     try:
         await asyncio.Future()
