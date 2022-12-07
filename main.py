@@ -4,7 +4,9 @@ from aio_pika import connect_robust
 from aio_pika.patterns import RPC
 from objection_engine import render_comment_list
 import os
+import tempfile
 
+tmpdir = tempfile.mkdtemp()
 def render_internal(output_filename: str, **kwargs):
     final_file = tmpdir + '/' + output_filename
     render_comment_list(output_filename=final_file, **kwargs)
