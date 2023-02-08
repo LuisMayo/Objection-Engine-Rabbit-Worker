@@ -1,7 +1,6 @@
 import asyncio
 
-from aio_pika import connect_robust
-from aio_pika.patterns import RPC
+import pika
 from objection_engine import render_comment_list
 import os
 import tempfile
@@ -13,6 +12,9 @@ def render_internal(output_filename: str, **kwargs):
     return final_file
 
 
+
+
+connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 async def main() -> None:
     connection = await connect_robust(
         f"amqp://{os.getenv('OE_RABBIT_CONNECTION', 'guest:guest@127.0.0.1')}/",
