@@ -1,6 +1,5 @@
 import pika
-from objection_engine.v4.make_movie import render_comment_list
-# from objection_engine.renderer import render_comment_list
+from objection_engine.renderer import render_comment_list
 from objection_engine.beans.comment import Comment
 from lib import callback
 
@@ -15,8 +14,9 @@ def func_executor(request):
 def callback_interceptor(ch, method, props, body):
     return callback(ch, method, props, body, func_executor)
 
-
-connection = pika.BlockingConnection()
+params = pika.ConnectionParameters(heartbeat=600,
+                                       blocked_connection_timeout=300)
+connection = pika.BlockingConnection(params)
 channel = connection.channel()
 channel.basic_qos(prefetch_count=1)
 
